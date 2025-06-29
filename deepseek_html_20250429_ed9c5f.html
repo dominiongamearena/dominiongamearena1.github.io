@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOMINION RANKING</title>
+  <style>
+  @media (max-width: 480px) {
+  .division-tab {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+} 
+    :root {
+      --platinum: linear-gradient(135deg, #e5e4e2 0%, #b8b8b8 100%);
+      --gold: linear-gradient(135deg, #ffd700 0%, #daa520 100%);
+      --silver: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%);
+      --bronze: linear-gradient(135deg, #cd7f32 0%, #a05a2c 100%);
+      --accent: #ff3c3c;
+      --dark-bg: rgba(14, 14, 14, 0.5); 
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      overflow-x: hidden;
+      background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      transition: background-image 0.5s ease-in-out;
+    }
+    
+    .platinum-bg {
+      background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') !important;
+    }
+    
+    .gold-bg {
+      background-image: url('Allianz_Arena_Football_Stadium_1200x1200.webp') !important;
+    }
+    
+    .silver-bg {
+      background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') !important;
+    }
+    
+    .bronze-bg {
+      background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') !important;
+    }
+    
+    .content-overlay {
+      background-color: var(--dark-bg);
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #0e0e0e;
+      z-index: 1000;
+      animation: fadeOut 1s ease forwards;
+      animation-delay: 3s;
+    }
+    
+    .loading-logo {
+      width: 400px;
+      margin-bottom: 30px;
+      animation: pulse 2s infinite;
+    }
+    
+    .main-logo {
+      width: 250px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    
+    .slogan {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+    
+    .division-tabs {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .division-tab {
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: none;
+      color: white;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .division-tab.active {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .division-tab.platinum {
+      background: var(--platinum);
+      color: #333;
+    }
+    
+    .division-tab.gold {
+      background: var(--gold);
+      color: #333;
+    }
+    
+    .division-tab.silver {
+      background: var(--silver);
+      color: #333;
+    }
+    
+    .division-tab.bronze {
+      background: var(--bronze);
+    }
+    
+    .division-content {
+      display: none;
+    }
+    
+    .division-content.active {
+      display: block;
+    }
+    
+    .leaderboard {
+      width: 95%;
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    th, td {
+      padding: 15px 20px;
+      border-bottom: 1px solid #333;
+      text-align: left;
+    }
+    
+    th {
+      color: var(--accent);
+      font-size: 1.1em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    tr:hover {
+      background-color: rgba(255, 60, 60, 0.1);
+    }
+    
+    .rank-1 {
+      background: linear-gradient(90deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%);
+    }
+    
+    .rank-2 {
+      background: linear-gradient(90deg, rgba(192,192,192,0.1) 0%, rgba(192,192,192,0.05) 100%);
+    }
+    
+    .rank-3 {
+      background: linear-gradient(90deg, rgba(205,127,50,0.1) 0%, rgba(205,127,50,0.05) 100%);
+    }
+    
+    .controls {
+      margin: 30px 0;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    button {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      font-size: 1em;
+    }
+    
+    button:hover {
+      background-color: #ff1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .admin-section {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: rgba(255, 60, 60, 0.1);
+      border-radius: 10px;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .admin-title {
+      color: var(--accent);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .admin-title svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    input, select {
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid #333;
+      background-color: #222;
+      color: white;
+      width: 100%;
+      margin-top: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 40px rgba(255, 60, 60, 0.3);
+    }
+    
+    .close-modal {
+      float: right;
+      cursor: pointer;
+      font-size: 28px;
+      color: var(--accent);
+      transition: color 0.3s;
+      line-height: 1;
+    }
+    
+    .close-modal:hover {
+      color: #ff1a1a;
+    }
+    
+    .player-highlight {
+      animation: highlight 2s;
+    }
+    
+    @keyframes highlight {
+      from { background-color: rgba(255, 60, 60, 0.3); }
+      to { background-color: transparent; }
+    }
+    
+    h1 {
+      color: var(--accent);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 2.5em;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .login-modal {
+      text-align: center;
+    }
+    
+    .login-modal h2 {
+      margin-bottom: 25px;
+      color: var(--accent);
+    }
+    
+    .password-input {
+      position: relative;
+    }
+    
+    .password-input input {
+      padding-right: 40px;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #777;
+    }
+    
+    .division-badge {
+      display: inline-block;
+      width: 24px;
+      height: 28px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-left: 8px;
+      position: relative;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+    }
+
+    .badge-platinum {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23e5e4e2" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z"/></svg>');
+    }
+
+    .badge-gold {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23ffd700" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z"/></svg>');
+    }
+
+    .badge-silver {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23c0c0c0" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z"/></svg>');
+    }
+
+    .badge-bronze {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23cd7f32" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z"/></svg>');
+    }
+    
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .mute-btn {
+      background-color: rgba(255, 60, 60, 0.7);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .mute-btn:hover {
+      background-color: rgba(255, 60, 60, 0.9);
+      transform: scale(1.1);
+    }
+    
+    .mute-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .player-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 2px solid var(--accent);
+    }
+    
+    .player-name-cell {
+      display: flex;
+      align-items: center;
+    }
+    
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    
+    .avatar-preview {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 2px solid var(--accent);
+    }
+
+    .player-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .player-actions button {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      table {
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 10px 5px;
+      }
+      
+      .player-name-cell {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .player-avatar {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+      }
+      
+      .division-tab {
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+      
+      .main-logo {
+        width: 180px;
+      }
+      
+      .leaderboard {
+        padding: 15px;
+        width: 98%;
+      }
+
+      .player-actions {
+        flex-direction: column;
+      }
+    }
+
+   @media (max-width: 480px) {
+  .division-tab {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      .division-tabs {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .division-tab {
+        width: 90%;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-screen">
+    <img class="loading-logo" src="dominon_1_-removebg-preview.png" alt="Dominion Logo">
+    <div class="slogan">PLAY HARD LEVEL FAST</div>
+  </div>
+
+  <div class="content-overlay">
+    <div class="main-content" style="display:none">
+      <img class="main-logo" src="dominon_1_-removebg-preview.png" alt="Dominion Logo">
+      <h1>DOMINION RANKING</h1>
+      
+      <div class="division-tabs">
+        <button class="division-tab platinum active" data-division="platinum">Platinum Division</button>
+        <button class="division-tab gold" data-division="gold">Gold Division</button>
+        <button class="division-tab silver" data-division="silver">Silver Division</button>
+        <button class="division-tab bronze" data-division="bronze">Bronze Division</button>
+      </div>
+      
+      <div id="platinumDivision" class="division-content active">
+        <div class="leaderboard">
+          <table id="platinumTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Win Rate</th>
+                <th>Points</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="platinumBody">
+              <!-- Platinum division data will be inserted here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="goldDivision" class="division-content">
+        <div class="leaderboard">
+          <table id="goldTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Win Rate</th>
+                <th>Points</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="goldBody">
+              <!-- Gold division data will be inserted here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="silverDivision" class="division-content">
+        <div class="leaderboard">
+          <table id="silverTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Win Rate</th>
+                <th>Points</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="silverBody">
+              <!-- Silver division data will be inserted here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="bronzeDivision" class="division-content">
+        <div class="leaderboard">
+          <table id="bronzeTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Win Rate</th>
+                <th>Points</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bronzeBody">
+              <!-- Bronze division data will be inserted here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div id="adminControls" style="display:none">
+        <div class="admin-section">
+          <div class="admin-title">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+              <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+            </svg>
+            <span>Administrator Controls</span>
+          </div>
+          <div class="controls">
+            <button id="addResultBtn">Add Tournament Result</button>
+            <button id="addPlayerBtn">Add New Player</button>
+            <button id="resetBtn">Reset Tournament Data</button>
+            <button id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+      
+      <button id="adminLoginBtn" style="margin: 30px auto; display: block;">Admin Login</button>
+    </div>
+  </div>
+
+  <!-- Music Controls -->
+  <div class="music-controls">
+    <div class="mute-btn" id="muteBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content login-modal">
+      <span class="close-modal">&times;</span>
+      <h2>Admin Login</h2>
+      <div class="form-group">
+        <label for="adminUsername">Username:</label>
+        <input type="text" id="adminUsername" required placeholder="Enter admin username">
+      </div>
+      <div class="form-group password-input">
+        <label for="adminPassword">Password:</label>
+        <input type="password" id="adminPassword" required placeholder="Enter password">
+        <span class="toggle-password">👁️</span>
+      </div>
+      <button id="loginBtn">Login</button>
+    </div>
+  </div>
+
+  <!-- Add Tournament Result Modal -->
+  <div class="modal" id="resultModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Add Tournament Result</h2>
+      <div class="form-group">
+        <label for="divisionSelect">Division:</label>
+        <select id="divisionSelect" required>
+          <option value="platinum">Platinum</option>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="winnerSelect">Winner:</label>
+        <select id="winnerSelect" required></select>
+      </div>
+      <div class="form-group">
+        <label for="loserSelect">Loser:</label>
+        <select id="loserSelect" required></select>
+      </div>
+      <button id="submitResultBtn">Submit Result</button>
+    </div>
+  </div>
+
+  <!-- Add New Player Modal -->
+  <div class="modal" id="playerModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Add New Player</h2>
+      <div class="form-group">
+        <label for="playerDivision">Division:</label>
+        <select id="playerDivision" required>
+          <option value="bronze">Bronze</option>
+          <option value="silver">Silver</option>
+          <option value="gold">Gold</option>
+          <option value="platinum">Platinum</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="playerName">Player Name:</label>
+        <input type="text" id="playerName" required placeholder="Enter player name">
+      </div>
+      <div class="form-group">
+        <label>Player Avatar:</label>
+        <div class="avatar-upload">
+          <img id="avatarPreview" class="avatar-preview" src="https://via.placeholder.com/50" alt="Avatar Preview">
+          <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+          <button type="button" id="uploadBtn">Upload Image</button>
+        </div>
+      </div>
+      <button id="submitPlayerBtn">Add Player</button>
+    </div>
+  </div>
+
+  <!-- Edit Player Modal -->
+  <div class="modal" id="editPlayerModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Edit Player</h2>
+      <div class="form-group">
+        <label for="editPlayerName">Player Name:</label>
+        <input type="text" id="editPlayerName" required disabled>
+      </div>
+      <div class="form-group">
+        <label>Player Avatar:</label>
+        <div class="avatar-upload">
+          <img id="editAvatarPreview" class="avatar-preview" src="https://via.placeholder.com/50" alt="Avatar Preview">
+          <input type="file" id="editAvatarUpload" accept="image/*" style="display: none;">
+          <button type="button" id="editUploadBtn">Upload Image</button>
+        </div>
+      </div>
+      <button id="savePlayerBtn">Save Changes</button>
+      <button id="deletePlayerBtn" style="background-color: #ff0000; margin-top: 10px;">Delete Player</button>
+    </div>
+  </div>
+
+  <audio id="backgroundMusic" loop>
+    <source src="civ_1_am_lyrics_pop_out_at_1_in_the_mornin_mp3_71291.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+  const APP_VERSION = "v1.0.2"; // Change this every time you update the site
+
+if (localStorage.getItem("dominionAppVersion") !== APP_VERSION) {
+  localStorage.setItem("dominionAppVersion", APP_VERSION);
+  location.reload(true);
+}
+
+    // Player data storage
+    let players = [];
+    let currentDivision = 'platinum';
+    let isAdmin = false;
+    const ADMIN_CREDENTIALS = {
+      username: "dominionAdmin",
+      password: "tournamentMaster2024"
+    };
+    
+    // Division thresholds
+    const DIVISION_THRESHOLDS = {
+      platinum: 1500,
+      gold: 1200,
+      silver: 900,
+      bronze: 0
+    };
+    
+    // Division colors for badges
+    const DIVISION_COLORS = {
+      platinum: 'badge-platinum',
+      gold: 'badge-gold',
+      silver: 'badge-silver',
+      bronze: 'badge-bronze'
+    };
+    
+    // Division background images
+    const DIVISION_BACKGROUNDS = {
+      platinum: 'platinum-bg',
+      gold: 'gold-bg',
+      silver: 'silver-bg',
+      bronze: 'bronze-bg'
+    };
+
+    // Initialize with some sample data if lo
+  if(localStorage.getItem('dominionPlayers')) {
+  players = JSON.parse(localStorage.getItem('dominionPlayers'));
+} else {
+  players = [
+    { 
+      name: "IPPA WRLDS",
+      wins: 13,
+      losses: 0,
+      points: 1700,  // Must be ≥1500 for Platinum
+      division: "platinum",
+      avatar: "IPPA WRLDS.jpg"
+    },
+    { 
+      name: "JOSHY",
+      wins: 5,
+      losses: 10,
+      points: 700,  // Force to gold for demo
+      division: "silver",
+      avatar: "joshy.png"
+    },
+    { 
+      name: "WAGABA",
+      wins: 3,
+      losses: 2,
+      points: 150,  // This would actually be Gold division (1200-1499)
+      division: "bronze",  // Force to bronze for demo
+      avatar: "wagwaba.jpg"
+    },
+    { 
+      name: "KENO",
+      wins: 11,
+      losses: 4,
+      points: 1600,
+      division: "platinum",
+      avatar: "KENO.jpg"
+    },
+	{ 
+      name: "MASH",
+      wins: 10,
+      losses: 5,
+      points: 1550,
+      division: "platinum",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "HASH",
+      wins: 9,
+      losses: 6,
+      points: 1500,
+      division: "platinum",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "STUPENDOUS SAM",
+      wins: 8,
+      losses: 7,
+      points: 1200,
+      division: "gold",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "Frank PSN",
+      wins: 7,
+      losses: 8,
+      points: 1100,
+      division: "gold",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "T",
+      wins: 6,
+      losses: 9,
+      points: 900,
+      division: "gold",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "Konrad",
+      wins: 1,
+      losses: 11,
+      points: 290,
+      division: "bronze",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "Mark",
+      wins: 1,
+      losses: 10,
+      points: 520,
+      division: "silver",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "Darius",
+      wins: 0,
+      losses: 11,
+      points: 250,
+      division: "bronze",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "Joooo",
+      wins: 0,
+      losses: 12,
+      points: 120,
+      division: "bronze",
+      avatar: "joshy.png"
+    },
+	{ 
+      name: "Horny Spirit",
+      wins: 0,
+      losses: 0,
+      points: 100,
+      division: "bronze",
+      avatar: "joshy.png"
+    },
+  ];
+  savePlayers();
+}
+
+// In updateLeaderboard() function - ADD DEBUGGING
+function updateLeaderboard(division) {
+  console.log(`Updating ${division} leaderboard with players:`, 
+    players.filter(p => p.division === division));
+  
+  // Rest of the function remains the same
+}
+    // DOM elements
+    const leaderboardBodies = {
+      platinum: document.getElementById('platinumBody'),
+      gold: document.getElementById('goldBody'),
+      silver: document.getElementById('silverBody'),
+      bronze: document.getElementById('bronzeBody')
+    };
+    
+    const divisionTabs = document.querySelectorAll('.division-tab');
+    const divisionContents = document.querySelectorAll('.division-content');
+    const addResultBtn = document.getElementById('addResultBtn');
+    const addPlayerBtn = document.getElementById('addPlayerBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const adminControls = document.getElementById('adminControls');
+    const resultModal = document.getElementById('resultModal');
+    const playerModal = document.getElementById('playerModal');
+    const editPlayerModal = document.getElementById('editPlayerModal');
+    const loginModal = document.getElementById('loginModal');
+    const winnerSelect = document.getElementById('winnerSelect');
+    const loserSelect = document.getElementById('loserSelect');
+    const divisionSelect = document.getElementById('divisionSelect');
+    const playerDivisionSelect = document.getElementById('playerDivision');
+    const submitResultBtn = document.getElementById('submitResultBtn');
+    const submitPlayerBtn = document.getElementById('submitPlayerBtn');
+    const savePlayerBtn = document.getElementById('savePlayerBtn');
+    const deletePlayerBtn = document.getElementById('deletePlayerBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const playerNameInput = document.getElementById('playerName');
+    const editPlayerNameInput = document.getElementById('editPlayerName');
+    const adminUsernameInput = document.getElementById('adminUsername');
+    const adminPasswordInput = document.getElementById('adminPassword');
+    const togglePassword = document.querySelector('.toggle-password');
+    const closeModalButtons = document.querySelectorAll('.close-modal');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const muteBtn = document.getElementById('muteBtn');
+    const body = document.body;
+    const avatarUpload = document.getElementById('avatarUpload');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const editAvatarUpload = document.getElementById('editAvatarUpload');
+    const editUploadBtn = document.getElementById('editUploadBtn');
+    const editAvatarPreview = document.getElementById('editAvatarPreview');
+
+    // Current player being edited
+    let currentPlayerBeingEdited = null;
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set up music
+      backgroundMusic.volume = 0.25;
+      
+      // Try to autoplay music (may be blocked by browser)
+      const playPromise = backgroundMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Auto-play was prevented:", error);
+          // Show a mute button that will play music when clicked
+          muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
+          backgroundMusic.muted = true;
+        });
+      }
+      
+      // Set up mute button
+      muteBtn.addEventListener('click', toggleMute);
+      
+      // Set up avatar upload
+      uploadBtn.addEventListener('click', () => avatarUpload.click());
+      avatarUpload.addEventListener('change', handleAvatarUpload);
+      editUploadBtn.addEventListener('click', () => editAvatarUpload.click());
+      editAvatarUpload.addEventListener('change', handleEditAvatarUpload);
+      
+      // Set up division select change listener
+      divisionSelect.addEventListener('change', populatePlayerSelects);
+      
+      setTimeout(() => {
+        document.querySelector('.loading-screen').style.display = 'none';
+        document.querySelector('.main-content').style.display = 'block';
+        updateAllLeaderboards();
+        checkAdminStatus();
+        switchDivision('platinum'); // Set initial background
+      }, 3000);
+    });
+
+    // Event listeners
+    divisionTabs.forEach(tab => {
+      tab.addEventListener('click', () => switchDivision(tab.dataset.division));
+    });
+    
+    adminLoginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
+    logoutBtn.addEventListener('click', logoutAdmin);
+    addResultBtn.addEventListener('click', () => {
+      populatePlayerSelects();
+      resultModal.style.display = 'flex';
+    });
+    addPlayerBtn.addEventListener('click', () => {
+      playerNameInput.value = '';
+      avatarPreview.src = 'https://via.placeholder.com/50';
+      playerModal.style.display = 'flex';
+    });
+    resetBtn.addEventListener('click', resetTournamentData);
+    submitResultBtn.addEventListener('click', addTournamentResult);
+    submitPlayerBtn.addEventListener('click', addNewPlayer);
+    savePlayerBtn.addEventListener('click', savePlayerChanges);
+    deletePlayerBtn.addEventListener('click', deleteCurrentPlayer);
+    loginBtn.addEventListener('click', loginAdmin);
+    
+    togglePassword.addEventListener('click', function() {
+      const type = adminPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      adminPasswordInput.setAttribute('type', type);
+      this.textContent = type === 'password' ? '👁️' : '🔒';
+    });
+    
+    closeModalButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        this.closest('.modal').style.display = 'none';
+      });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === resultModal) resultModal.style.display = 'none';
+      if (e.target === playerModal) playerModal.style.display = 'none';
+      if (e.target === loginModal) loginModal.style.display = 'none';
+      if (e.target === editPlayerModal) editPlayerModal.style.display = 'none';
+    });
+
+    // Functions
+    function handleAvatarUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          avatarPreview.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleEditAvatarUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          editAvatarPreview.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function toggleMute() {
+      if (backgroundMusic.paused) {
+        backgroundMusic.play().catch(e => console.log("Play prevented:", e));
+      }
+      backgroundMusic.muted = !backgroundMusic.muted;
+      muteBtn.innerHTML = backgroundMusic.muted ? 
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>' :
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+    }
+
+    function savePlayers() {
+      localStorage.setItem('dominionPlayers', JSON.stringify(players));
+    }
+
+    function updateAllLeaderboards() {
+      updateLeaderboard('platinum');
+      updateLeaderboard('gold');
+      updateLeaderboard('silver');
+      updateLeaderboard('bronze');
+    }
+
+    function updateLeaderboard(division) {
+      // Filter players by division and sort by points (descending)
+      const divisionPlayers = players.filter(player => player.division === division)
+                                   .sort((a, b) => b.points - a.points);
+      
+      leaderboardBodies[division].innerHTML = '';
+      
+      divisionPlayers.forEach((player, index) => {
+        const winRate = player.wins + player.losses > 0 
+          ? ((player.wins / (player.wins + player.losses)) * 100).toFixed(1) + '%'
+          : '0%';
+        
+        const row = document.createElement('tr');
+        if (index < 3) row.classList.add(`rank-${index + 1}`);
+        
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td class="player-name-cell">
+            <img class="player-avatar" src="${player.avatar || 'https://via.placeholder.com/40'}" alt="${player.name}">
+            ${player.name} <span class="division-badge ${DIVISION_COLORS[player.division]}"></span>
+          </td>
+          <td>${player.wins}</td>
+          <td>${player.losses}</td>
+          <td>${winRate}</td>
+          <td>${player.points}</td>
+          <td class="player-actions">
+            ${isAdmin ? `<button class="edit-player" data-name="${player.name}">Edit</button>` : ''}
+          </td>
+        `;
+        leaderboardBodies[division].appendChild(row);
+      });
+
+      // Add event listeners to edit buttons
+      if (isAdmin) {
+        document.querySelectorAll('.edit-player').forEach(button => {
+          button.addEventListener('click', function() {
+            const playerName = this.getAttribute('data-name');
+            editPlayer(playerName);
+          });
+        });
+      }
+    }
+
+    function switchDivision(division) {
+      currentDivision = division;
+      
+      // Update active tab
+      divisionTabs.forEach(tab => {
+        if (tab.dataset.division === division) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      
+      // Update active content
+      divisionContents.forEach(content => {
+        if (content.id === `${division}Division`) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+      
+      // Update background
+      body.className = ''; // Remove all background classes
+      body.classList.add(DIVISION_BACKGROUNDS[division]);
+    }
+
+    function populatePlayerSelects() {
+      const division = divisionSelect.value;
+      const divisionPlayers = players.filter(player => player.division === division);
+      
+      winnerSelect.innerHTML = '';
+      loserSelect.innerHTML = '';
+      
+      divisionPlayers.forEach(player => {
+        const option = document.createElement('option');
+        option.value = player.name;
+        option.textContent = player.name;
+        winnerSelect.appendChild(option.cloneNode(true));
+        loserSelect.appendChild(option);
+      });
+    }
+
+    function addTournamentResult() {
+      const division = divisionSelect.value;
+      const winnerName = winnerSelect.value;
+      const loserName = loserSelect.value;
+      
+      if (winnerName === loserName) {
+        alert('Winner and loser cannot be the same player!');
+        return;
+      }
+      
+      const winner = players.find(p => p.name === winnerName && p.division === division);
+      const loser = players.find(p => p.name === loserName && p.division === division);
+      
+      if (!winner || !loser) {
+        alert('Error: Players not found in selected division!');
+        return;
+      }
+      
+      // Update stats
+      winner.wins++;
+      loser.losses++;
+      
+      // Elo-like rating system
+      const kFactor = 32;
+      const expectedWinner = 1 / (1 + Math.pow(10, (loser.points - winner.points) / 400));
+      const expectedLoser = 1 / (1 + Math.pow(10, (winner.points - loser.points) / 400));
+      
+      winner.points = Math.round(winner.points + kFactor * (1 - expectedWinner));
+      loser.points = Math.round(loser.points + kFactor * (0 - expectedLoser));
+      
+      // Check for division promotions/demotions
+      const winnerPromoted = checkPlayerDivision(winner);
+      const loserDemoted = checkPlayerDivision(loser);
+      
+      savePlayers();
+      
+      // Update both divisions if players changed divisions
+      if (winnerPromoted || winner.division !== division) {
+        updateLeaderboard(division);
+        updateLeaderboard(winner.division);
+      } else {
+        updateLeaderboard(division);
+      }
+      
+      if (loserDemoted || loser.division !== division) {
+        updateLeaderboard(division);
+        updateLeaderboard(loser.division);
+      }
+      
+      resultModal.style.display = 'none';
+      
+      // Highlight updated players
+      highlightPlayers([winnerName, loserName], division);
+      
+      if (winnerPromoted) {
+        alert(`${winnerName} has been promoted to ${winner.division.toUpperCase()} division!`);
+      }
+      if (loserDemoted) {
+        alert(`${loserName} has been demoted to ${loser.division.toUpperCase()} division!`);
+      }
+    }
+
+    function checkPlayerDivision(player) {
+      let newDivision = 'bronze';
+      
+      if (player.points >= DIVISION_THRESHOLDS.platinum) {
+        newDivision = 'platinum';
+      } else if (player.points >= DIVISION_THRESHOLDS.gold) {
+        newDivision = 'gold';
+      } else if (player.points >= DIVISION_THRESHOLDS.silver) {
+        newDivision = 'silver';
+      }
+      
+      if (player.division !== newDivision) {
+        player.division = newDivision;
+        return true; // Division changed
+      }
+      return false; // Division stayed the same
+    }
+
+   function addNewPlayer() {
+  const name = playerNameInput.value.trim();
+  const division = playerDivisionSelect.value;
+  
+  if (!name) {
+    alert('Please enter a player name');
+    return;
+  }
+     
+      // Case-insensitive check
+      if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+        alert('Player with this name already exists!');
+        return;
+      }
+      
+      const startingPoints = Math.max(DIVISION_THRESHOLDS[division] - 100, 0);
+      const avatar = avatarPreview.src.includes('placeholder.com') 
+        ? 'https://via.placeholder.com/40' 
+        : avatarPreview.src;
+      
+      const newPlayer = {
+        name,
+        wins: 0,
+        losses: 0,
+        points: startingPoints,
+        division,
+        avatar
+      };
+      
+      players.push(newPlayer);
+      savePlayers();
+      
+      // Immediately update the specific division table
+      updateLeaderboard(division);
+      
+      playerModal.style.display = 'none';
+      playerNameInput.value = '';
+      avatarPreview.src = 'https://via.placeholder.com/50';
+      
+      // Highlight new player
+      highlightPlayers([name], division);
+      
+      // Show confirmation
+      alert(`${name} has been added to ${division.toUpperCase()} division!`);
+    }
+
+    function editPlayer(playerName) {
+      const player = players.find(p => p.name === playerName);
+      if (!player) return;
+      
+      currentPlayerBeingEdited = player;
+      editPlayerNameInput.value = player.name;
+      editAvatarPreview.src = player.avatar || 'https://via.placeholder.com/50';
+      editPlayerModal.style.display = 'flex';
+    }
+
+    function savePlayerChanges() {
+      if (!currentPlayerBeingEdited) return;
+      
+      const newAvatar = editAvatarPreview.src.includes('placeholder.com') 
+        ? currentPlayerBeingEdited.avatar || 'https://via.placeholder.com/40'
+        : editAvatarPreview.src;
+      
+      currentPlayerBeingEdited.avatar = newAvatar;
+      savePlayers();
+      
+      // Update all leaderboards in case the player changed divisions
+      updateAllLeaderboards();
+      
+      editPlayerModal.style.display = 'none';
+      currentPlayerBeingEdited = null;
+    }
+
+    function deleteCurrentPlayer() {
+      if (!currentPlayerBeingEdited) return;
+      
+      if (confirm(`Are you sure you want to permanently delete ${currentPlayerBeingEdited.name}?`)) {
+        const index = players.findIndex(p => p.name === currentPlayerBeingEdited.name);
+        if (index !== -1) {
+          const division = currentPlayerBeingEdited.division;
+          players.splice(index, 1);
+          savePlayers();
+          updateLeaderboard(division);
+        }
+      }
+      
+      editPlayerModal.style.display = 'none';
+      currentPlayerBeingEdited = null;
+    }
+
+    function resetTournamentData() {
+      if (confirm('Are you sure you want to reset ALL tournament data? This cannot be undone.')) {
+        players = [];
+        savePlayers();
+        updateAllLeaderboards();
+      }
+    }
+
+    function highlightPlayers(playerNames, division) {
+      const rows = leaderboardBodies[division].querySelectorAll('tr');
+      
+      rows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(2)');
+        if (nameCell && playerNames.some(name => nameCell.textContent.includes(name))) {
+          row.classList.add('player-highlight');
+          
+          // Remove highlight class after animation completes
+          setTimeout(() => {
+            row.classList.remove('player-highlight');
+          }, 2000);
+        }
+      });
+    }
+
+    function loginAdmin() {
+      const username = adminUsernameInput.value.trim();
+      const password = adminPasswordInput.value;
+      
+      if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        isAdmin = true;
+        localStorage.setItem('dominionAdmin', 'true');
+        adminControls.style.display = 'block';
+        adminLoginBtn.style.display = 'none';
+        loginModal.style.display = 'none';
+        adminUsernameInput.value = '';
+        adminPasswordInput.value = '';
+        updateAllLeaderboards(); // Refresh to show edit buttons
+      } else {
+        alert('Invalid admin credentials!');
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      localStorage.removeItem('dominionAdmin');
+      adminControls.style.display = 'none';
+      adminLoginBtn.style.display = 'block';
+      updateAllLeaderboards(); // Refresh to hide edit buttons
+    }
+
+    function checkAdminStatus() {
+      if (localStorage.getItem('dominionAdmin') === 'true') {
+        isAdmin = true;
+        adminControls.style.display = 'block';
+        adminLoginBtn.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
